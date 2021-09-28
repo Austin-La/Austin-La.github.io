@@ -1,1 +1,108 @@
 
+nav {
+  position:-webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: green;
+  opacity: 90%;
+  padding: 5px;
+  font-size: 20px;
+}
+
+body {
+  background-color: skyblue;
+}
+
+#igottabeme {
+font-family: Arial, Helvetica, sans-serif;
+}
+
+.classy {
+  margin-left: 10px;
+}
+
+.cat{
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+}
+
+.dog{
+  position: relative;
+  left: -50px;
+  bottom: 150px;
+}
+
+.bird{
+  right: 250px;
+  left: 250px;
+  top: 50px;
+}
+
+#d1,#d2,#d3,#positionMe {
+  margin-bottom: 50px;
+}
+
+ span { 
+  width: 100px;
+  height: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 20px;
+  padding-left: 20px;
+  background-color: yellow;
+  border-width: 5px;
+  border-color: blue;
+  border-style: solid; 
+} 
+
+.a {
+  word-wrap: break-word;
+  color: black;
+   height: 1000px; /* height properity doesnt work as intended */
+}
+
+.b {
+   display: block;
+   color: black;
+}
+
+.c{
+  word-wrap: break-word;
+  color: black;
+  display: inline-block;
+}
+
+/* --- pre-existing css --- */
+
+ table{
+    text-align: right;
+  }
+
+  tr:nth-child(2n) { 
+    background-color: gray;
+  }
+
+   tr {
+    background-color: white;
+  }
+
+   th {
+    color: white;
+    background-color: black;
+  }
+
+   tr:nth-child(2n):hover, .alternate tr:hover { 
+   background-color:grey; 
+   } 
+ 
+  td:hover{
+    background-color: yellow;
+  }
+
+  input:focus{
+    background-color: pink;
+  } 
+
+ 
