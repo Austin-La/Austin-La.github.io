@@ -1,3 +1,8 @@
+// Author: Austin LaFramboise 
+// Date: 10/17/21
+// Project Description: A golf scorecard app with buttons to add score, subtract score, and clear rows. It also tallys score total and over/under total 
+//----------------------------------------------------------------------------------------------------------------------------------------------------------//
+
 // Creating a array to iterate through 18 holes
 let elem = [];
 var Table = document.getElementById('Table'); // table object to reference 
@@ -48,7 +53,7 @@ function add1 (elem) {
 function sub1 (elem) {
   if(elem.children[2].innerHTML == "-" || 0){
     elem.children[2].innerHTML = "-1";
-    elem.children[3].innerHTML = elem.children[2].innerHTML - elem.children[1].innerHTML;
+    elem.children[3].innerHTML = elem.children[2].innerHTML - elem.children[1].innerHTML; // Same code to find over/under 
   }
 
   else {
