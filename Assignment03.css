@@ -1,0 +1,26 @@
+/* center-align table columns */
+th, td {text-align: center;} 
+
+#myTable{
+    position:absolute;
+    color:white;
+    height: 90%;
+    width: 100%;
+}
+
+.btn-success{
+    color:green
+}
+
+.btn-danger{
+    color:red
+}
+
+.btn-clearTD{
+    color:blue
+}
+
+h1{
+  text-align: left;
+  text-indent: 10.5%;
+}
