@@ -1,6 +1,7 @@
+// Creating a array to iterate through 18 holes
 let elem = [];
-var myTable = document.getElementById('myTable');
-myTable.rows[19].cells[1].innerHTML = 72;
+var Table = document.getElementById('Table'); // table object to reference 
+Table.rows[19].cells[1].innerHTML = 72;
 
 // assign the entire table row for hole 1 to a variable, elem
 // elem[1] = document.getElementById("1");
@@ -56,15 +57,15 @@ scoreTotal = 0;
 overTotal = 0;
 
 for(let i=1; i<=18; i++){
-  if(myTable.rows[i].cells[2].innerHTML != "-")
-  scoreTotal += Number.parseInt(myTable.rows[i].cells[2].innerHTML);
+  if(Table.rows[i].cells[2].innerHTML != "-")
+  scoreTotal += Number.parseInt(Table.rows[i].cells[2].innerHTML);
 
-  if(myTable.rows[i].cells[3].innerHTML != "-") 
-  overTotal += Number.parseInt(myTable.rows[i].cells[3].innerHTML);
+  if(Table.rows[i].cells[3].innerHTML != "-") 
+  overTotal += Number.parseInt(Table.rows[i].cells[3].innerHTML);
 }
 
-  myTable.rows[19].cells[2].innerHTML = scoreTotal;
-  myTable.rows[19].cells[3].innerHTML = overTotal;
+  Table.rows[19].cells[2].innerHTML = scoreTotal;
+  Table.rows[19].cells[3].innerHTML = overTotal;
 }
 
 
