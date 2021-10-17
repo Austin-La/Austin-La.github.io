@@ -14,6 +14,8 @@ Table.rows[19].cells[1].innerHTML = 72; // totaling par (constant)
 // assign a function to the + button
 // elem[1].children[4].children[0].onclick = function(){add1(elem[1]);};
 
+//--------------------------------------------------------------------------------------//
+
 // for loop given to us slighty modified 
 // each iteration (meaning each hole has functions to add or subtract a point, update variables to account for over and under par scores, and clear data)
 for(let i=1; i<=18; i++) {
@@ -29,14 +31,14 @@ function add1 (elem) {
   // if value is 0 add 1 
   if(elem.children[2].innerHTML == "-") {
     elem.children[2].innerHTML = "1";
-    // calculating over/under
+    // calculating over/under  score - par 
     elem.children[3].innerHTML= elem.children[2].innerHTML - elem.children[1].innerHTML;
   }
 
   // if not zero add one to currentScore and calculate over/under
   else {
     let currentScore = elem.children[2].innerHTML;
-    currentScore = Number.parseInt(currentScore);
+    currentScore = Number.parseInt(currentScore); // String to a number 
     elem.children[2].innerHTML = currentScore + 1;
     elem.children[3].innerHTML = elem.children[2].innerHTML - elem.children[1].innerHTML;
   }
@@ -51,7 +53,7 @@ function sub1 (elem) {
 
   else {
     let currentScore = elem.children[2].innerHTML;
-    currentScore = Number.parseInt(currentScore);
+    currentScore = Number.parseInt(currentScore); // String to a number 
     elem.children[2].innerHTML = currentScore - 1;
     elem.children[3].innerHTML = elem.children[2].innerHTML - elem.children[1].innerHTML;
   }
