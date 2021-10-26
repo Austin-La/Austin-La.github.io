@@ -46,6 +46,31 @@ let person = {
   // put borders around the cells, too, not just around the edge of the table
   // Display output in <div id="2B">
 
+// append to tableobj a 5-column table row 
+function appendTableRow5 (tableobj, col1, col2, col3, col4, col5) {
+  // create column (table division) DOM objects
+  let td1 = document.createElement("td");
+  let td2 = document.createElement("td");
+  let td3 = document.createElement("td");
+  let td4 = document.createElement("td");
+  let td5 = document.createElement("td");
+  // insert content into columns
+  td1.innerHTML = col1;
+  td2.innerHTML = col2;
+  td3.innerHTML = col3;
+  td4.innerHTML = col4;
+  td5.innerHTML = col5;
+  // create table row DOM object
+  let tr = document.createElement("tr");
+  // append table divisions (columns) to table row
+  tr.appendChild(td1);
+  tr.appendChild(td2);
+  tr.appendChild(td3);
+  tr.appendChild(td4);
+  tr.appendChild(td5);
+  // append the row to the tbody element in the table
+  tableobj.children[0].appendChild(tr);
+}
 
   // Slighty modifying given code to create a 5 x 5 DOM object 
   let div2b = document.getElementById("2B");
@@ -103,10 +128,11 @@ let person = {
     tableobj.children[0].children[4].appendChild(tr4);
   }
 
+  // Creating table
   let div3b = document.getElementById("3B"); // Location to place data
   myTable = document.getElementsByTagName("table")[2]; // Finding and cloning table3A
-  myClone = myTable.cloneNode(true);
-  div3b.appendChild(myClone);
+  newTable = myTable.cloneNode(true);
+  div3b.appendChild(newTable);
 
   // Function to tally totals vertically per column
   function getTotal(col1, col2, col3){
@@ -120,15 +146,20 @@ let person = {
     return product;
   }
 
-appendTableRow3(myClone, "Totals:", getTotal(myClone.children[0].children[1].children[1].innerHTML, myClone.children[0].children[2].children[1].innerHTML, myClone.children[0].children[3].children[1].innerHTML),
-getTotal(myClone.children[0].children[1].children[2].innerHTML, myClone.children[0].children[2].children[2].innerHTML, myClone.children[0].children[3].children[2].innerHTML));
+appendTableRow3(newTable, "Totals:", getTotal(newTable.children[0].children[1].children[1].innerHTML, // col1
+  newTable.children[0].children[2].children[1].innerHTML, // col2
+  newTable.children[0].children[3].children[1].innerHTML), // col3
 
-let multiply1 = getProduct(myClone.children[0].children[1].children[1].innerHTML, myClone.children[0].children[1].children[2].innerHTML);
-let multiply2 = getProduct(myClone.children[0].children[2].children[1].innerHTML, myClone.children[0].children[2].children[2].innerHTML);
-let multiply3 = getProduct(myClone.children[0].children[3].children[1].innerHTML, myClone.children[0].children[3].children[2].innerHTML);
-let multiply4 = getProduct(myClone.children[0].children[4].children[1].innerHTML, myClone.children[0].children[4].children[2].innerHTML);
-appendColumn3(myClone, multiply1,multiply2,multiply3,multiply4);
-  
+getTotal(newTable.children[0].children[1].children[2].innerHTML, // col1
+  newTable.children[0].children[2].children[2].innerHTML, // col2
+  newTable.children[0].children[3].children[2].innerHTML)); // col3
+
+let product1 = getProduct(newTable.children[0].children[1].children[1].innerHTML, newTable.children[0].children[1].children[2].innerHTML);
+let product2 = getProduct(newTable.children[0].children[2].children[1].innerHTML, newTable.children[0].children[2].children[2].innerHTML);
+let product3 = getProduct(newTable.children[0].children[3].children[1].innerHTML, newTable.children[0].children[3].children[2].innerHTML);
+let product4 = getTotal(product1, product2, product3);
+appendColumn3(newTable, product1, product2, product3, product4);
+   
   // 9. Revise a non-object-oriented HTML form. Make it so the field in focus displays *only* its own error (not the errors of all the other fields), however, if the user clicks the "validate" button, then display all errors.
   // code below is from: https://www.guru99.com/practical-code-examples-using-javascript.html 
   
@@ -164,7 +195,7 @@ appendColumn3(myClone, multiply1,multiply2,multiply3,multiply4);
             let errMessage = errors[i];
             let div = divs[i];
               if (inputs[i] == ""){
-                // document.getElementById(div).innerHTML = errMessage; // This code breaks the remaining functionailty of the funciton 
+               // document.getElementById(div).innerHTML = errMessage; // This code breaks the remaining functionailty of the funciton 
                                                                         // I'm unaware if this is the intended fix to this problem but it made sense to remove it
                                                                         // If otherwise left it would always throw an error at every index
               }
@@ -192,6 +223,32 @@ appendColumn3(myClone, multiply1,multiply2,multiply3,multiply4);
   
       // function: finalValidate() ------------------------------------
       function finalValidate() {
+
+        // initialize input array
+        let inputs = new Array();
+        inputs[0] = document.getElementById('first').value;
+        inputs[1] = document.getElementById('last').value;
+        inputs[2] = document.getElementById('email').value;
+        inputs[3] = document.getElementById('uid').value;
+        inputs[4] = document.getElementById('password').value;
+        inputs[5] = document.getElementById('confirm').value;
+        // initialize error array
+        let errors = new Array();
+        errors[0] = "<span style='color:red'>Please enter your first name!</span>";
+        errors[1] = "<span style='color:red'>Please enter your last name!</span>";
+        errors[2] = "<span style='color:red'>Please enter your email!</span>";
+        errors[3] = "<span style='color:red'>Please enter your user id!</span>";
+        errors[4] = "<span style='color:red'>Please enter your password!</span>";
+        errors[5] = "<span style='color:red'>Please confirm your password!</span>";
+
+        for (i in inputs) {
+          let errMessage = errors[i];
+          let div = divs[i];
+            if (inputs[i] === ""){
+              document.getElementById(div).innerHTML = errMessage; // if answers are incorrect or blank once button is clicked display according error messages 
+                                                                                                                 
+            }}
+        
         let count = 0;
           for (i = 0; i < 6; i++) {
             let div = divs[i];
@@ -250,32 +307,6 @@ appendColumn3(myClone, multiply1,multiply2,multiply3,multiply4);
     tableobj.children[0].appendChild(tr);
   }
 
-  // append to tableobj a 5-column table row 
-  function appendTableRow5 (tableobj, col1, col2, col3, col4, col5) {
-    // create column (table division) DOM objects
-    let td1 = document.createElement("td");
-    let td2 = document.createElement("td");
-    let td3 = document.createElement("td");
-    let td4 = document.createElement("td");
-    let td5 = document.createElement("td");
-    // insert content into columns
-    td1.innerHTML = col1;
-    td2.innerHTML = col2;
-    td3.innerHTML = col3;
-    td4.innerHTML = col4;
-    td5.innerHTML = col5;
-    // create table row DOM object
-    let tr = document.createElement("tr");
-    // append table divisions (columns) to table row
-    tr.appendChild(td1);
-    tr.appendChild(td2);
-    tr.appendChild(td3);
-    tr.appendChild(td4);
-    tr.appendChild(td5);
-    // append the row to the tbody element in the table
-    tableobj.children[0].appendChild(tr);
-  }
-  
   // return a DOM object containing an empty table (with tbody element)
   function createTable(id) {
     let table = document.createElement("table");
@@ -286,7 +317,7 @@ appendColumn3(myClone, multiply1,multiply2,multiply3,multiply4);
   }
   
   // possible object oriented form append code
-  /*
+  
   let fieldLabel, fieldEntry, fieldError;
   for(let i=0; i<formArray.length; i++) {
     fieldLabel = formArray[i].label;
@@ -299,5 +330,5 @@ appendColumn3(myClone, multiply1,multiply2,multiply3,multiply4);
   console.log(fieldLabel);
   console.log(fieldEntry);
   console.log(fieldError);
-  */
+  
 
