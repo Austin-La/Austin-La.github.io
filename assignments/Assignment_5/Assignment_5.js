@@ -254,7 +254,7 @@ for (let i=0; i<covidJsObj.Countries.length; i++) {
     "TotalConfirmed": covidJsObj.Countries[i].TotalConfirmed,
     "TotalDeaths": covidJsObj.Countries[i].TotalDeaths, // Added TotalDeaths
     "Population": populations[covidJsObj.Countries[i].Slug], // Added Population
-    "TotalConfirmedPer100k": Math.round(100000 * covidJsObj.Countries[i].TotalDeaths / populations[covidJsObj.Countries[i].Slug]) // TotalConfirmedPer100k
+    "TotalConfirmedPer100k": Math.round(100000 * covidJsObj.Countries[i].TotalConfirmed / populations[covidJsObj.Countries[i].Slug]) // TotalConfirmedPer100k
   })}
   
 }newArray = _.orderBy(newArray, "TotalConfirmedPer100k", "desc");}
