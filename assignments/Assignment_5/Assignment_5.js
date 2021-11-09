@@ -30,6 +30,10 @@ var chartData = {
       label: 'oranges',
       data: [2, 29, 5, 5, 2, 3, 10],
       backgroundColor: "rgba(255,140,0,0.4)"
+    },{
+      label: 'Asian Pear so tasty',
+      data: [2, 29, 5, 5, 2, 3, 10],
+      backgroundColor: "rgba(255,140,0,0.4)"
     }]
   },
   options: {
@@ -43,10 +47,14 @@ var chartData = {
           // logarithmic scale ignores maxTicksLimit
           maxTicksLimit: 11,
           callback: function(label, index, labels) {
-            return (   label/1000 > 9 
+
+            // Scaling by 10 
+            return (   label/1000 == 10000
+                    || label/1000 == 1000
+                    || label/1000 == 100
+                    || label/1000 == 10
                     || label/1000 == 1 
-                    || label/1000 == 0.1 
-                    || label/1000 == 0.01) 
+                    || label/1000 == .1) 
               ? label/1000+'k' :  "";
           }
         },
@@ -70,18 +78,33 @@ var chartData = {
 // code below modified from: 
 // https://www.w3schools.com/js/js_ajax_intro.asp
 
-function loadContent() {
-  xhttp = new XMLHttpRequest();
+// ajax call
+xhttp = new XMLHttpRequest();
+currentTime = dayjs();
+
+// Saving to local storage and allowing a call after 24 hours 
+if(localStorage.getItem('covid') == null || dayjs(JSON.parse(localStorage.getItem('lastRequest'))) <= currentTime){
   xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 
-        && this.status == 200) {
-      
-      covidJson = this.responseText;
-      covidJsObj = JSON.parse(covidJson);
+    if (this.readyState == 4  && this.status == 200) {
+      localStorage.setItem('covid', this.responseText);
+    }
+    
+  } 
+  }; 
+
+function loadContent() {
+  
+  xhttp.open("GET", URL, true);
+  xhttp.send();
+    
+  covidJson = localStorage.getItem('covid');
+  covidJsObj = JSON.parse(covidJson);
+  
       newConfirmedOver1000 = [];
+      update();
       
 	    for (let c of covidJsObj.Countries) {
-        if (c.NewConfirmed > 5000) {
+        if (c.NewConfirmed > 50000) {
           newConfirmedOver1000.push({ 
             "Slug": c.Slug, 
             "NewConfirmed": c.NewConfirmed, 
@@ -91,34 +114,24 @@ function loadContent() {
       }
       newConfirmedOver1000 = _.orderBy(newConfirmedOver1000, "NewDeaths", "desc");
 
-      chartData.data.datasets[0].backgroundColor 
-        = "rgba(100,100,100,0.4)"; // gray
-      chartData.data.datasets[1].backgroundColor 
-        = "rgba(255,0,0,0.4)"; // red
-      chartData.data.datasets[0].label  
-        = 'new cases';
-      chartData.data.datasets[1].label  
-        = 'new deaths';
-      chartData.data.labels  
-        = newConfirmedOver1000.map( (x) => x.Slug );
-      chartData.data.datasets[0].data  
-        = newConfirmedOver1000.map( 
-          (x) => x.NewConfirmed );
-      chartData.data.datasets[1].data  
-        = newConfirmedOver1000.map( 
-          (x) => x.NewDeaths );
-      chartData.options.title.text 
-        = "Covid 19 Hotspots" ;
+      chartData.data.datasets[0].backgroundColor = "rgba(100,100,100,0.4)"; // gray
+      chartData.data.datasets[1].backgroundColor = "rgba(255,0,0,0.4)"; // red
+      chartData.data.datasets[2].backgroundColor = "rgba(0,0,255,0.4)"; // blue
+      chartData.data.datasets[0].label = 'new cases';
+      chartData.data.datasets[1].label = 'new deaths';
+      chartData.data.datasets[2].label = 'Total Confirmed Per 100k';
+      chartData.data.labels = newArray.map( (x) => x.Slug );
+      chartData.data.datasets[0].data = newArray.map((x) => x.TotalConfirmed ); // Total values 
+      chartData.data.datasets[1].data = newArray.map((x) => x.TotalDeaths); // Total values 
+      chartData.data.datasets[2].data = newArray.map((x) => x.TotalConfirmedPer100k); // Total values 
+      chartData.options.title.text = "Covid 19 Hotspots as of " + dayjs().format("MM/DD/YYYY");
       myChart = new Chart(ctx, chartData); 
 
-    } // end if
+     // end if
     
   }; // end xhttp.onreadystatechange = function()
   
-  xhttp.open("GET", URL, true);
-  xhttp.send();
-  
-} // end function loadContent() 
+ // end function loadContent() 
 
 // data from: https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
 var populations = {
@@ -229,11 +242,19 @@ var populations = {
 // loop through all covidJsObj.Countries[i] 
 // push all info i need
 var newArray = [] 
+function update(){
+
 for (let i=0; i<covidJsObj.Countries.length; i++) {
+
+  // only for countries with AT LEAST 50,000 total deaths
+  if(Object.keys(populations).includes(covidJsObj.Countries[i].Slug) && covidJsObj.Countries[i].TotalDeaths >= 50000){ 
   newArray.push({
+
     "Slug": "\"" + covidJsObj.Countries[i].Slug + "\"",
-    "TotalConfirmed": covidJsObj.Countries[i].TotalConfirmed
-    // continue here...
-  })
+    "TotalConfirmed": covidJsObj.Countries[i].TotalConfirmed,
+    "TotalDeaths": covidJsObj.Countries[i].TotalDeaths, // Added TotalDeaths
+    "Population": populations[covidJsObj.Countries[i].Slug], // Added Population
+    "TotalConfirmedPer100k": Math.round(100000 * covidJsObj.Countries[i].TotalDeaths / populations[covidJsObj.Countries[i].Slug]) // TotalConfirmedPer100k
+  })}
   
-}
+}newArray = _.orderBy(newArray, "TotalConfirmedPer100k", "desc");}
